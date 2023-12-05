@@ -14,6 +14,13 @@ public:
 	void set_Data();
 	void write_file(vector<legal_service>& arr, string path);
 	void read_file(vector<legal_service>& arr, string path);
+	void print_data();
+	void print_field();
+	void print_field_mm();
+	void find_field(vector<legal_service>& arr, int var, string data);
+	void find_min(vector<legal_service>& arr, int var);
+	void find_max(vector<legal_service>& arr, int var);
+	void sort_field(vector<legal_service>& arr, int var);
 private:
 	int number;//номер услуги
 	int category;//категория услуги
@@ -31,6 +38,7 @@ int main()
 	int var_switch, count, var;
 	var = count = var_switch = 0;
 	string path = "data.txt";
+	string data;
 	bool exit = false;
 	service.print_info();
 	while (!exit)
@@ -74,6 +82,8 @@ int main()
 			}
 			break;
 		case 4:
+			service.read_file(arr, path);
+			cout << "Данные успешно считаны" << endl;
 			break;
 		case 5:
 			if (arr.empty())
@@ -82,7 +92,12 @@ int main()
 			}
 			else
 			{
-
+				service.print_field();
+				cout << "Выберите поле из предложенных" << endl;
+				cin >> var;
+				cout << "Введите данные" << endl;
+				cin >> data;
+				service.find_field(arr, var, data);
 			}
 			break;
 		case 6:
@@ -92,7 +107,10 @@ int main()
 			}
 			else
 			{
-
+				service.print_field_mm();
+				cout << "Выберите поле" << endl;
+				cin >> var;
+				service.find_min(arr, var);
 			}
 			break;
 		case 7:
@@ -102,7 +120,10 @@ int main()
 			}
 			else
 			{
-
+				service.print_field_mm();
+				cout << "Выберите поле" << endl;
+				cin >> var;
+				service.find_max(arr, var);
 			}
 			break;
 		case 8:
@@ -122,7 +143,10 @@ int main()
 			}
 			else
 			{
-
+				for (auto& el : arr)
+				{
+					el.print_data();
+				}
 			}
 			break;
 		case 10:
@@ -243,15 +267,219 @@ void legal_service::write_file(vector<legal_service>& arr, string path)
 void legal_service::read_file(vector<legal_service>& arr, string path)
 {
 	fstream file;
+	legal_service obj;
 	string data;
 	int size = 0;
 	file.open(path, fstream::in);
 	if (file.is_open())
 	{
 		getline(file, data);
+		size = stoi(data);
+		for (int i = 0;i < size;i++)
+		{
+			getline(file, data);
+			obj.number = stoi(data);
+			getline(file, data);
+			obj.category = stoi(data);
+			getline(file, obj.name_service);
+			getline(file, obj.date);
+			getline(file, obj.name_client);
+			getline(file, obj.name_lawyer);
+			getline(file, data);
+			obj.price = stoi(data);
+		}
+		file.close();
 	}
 	else
 	{
 		cout << "Ошибка открытия файла" << endl;
+	}
+}
+
+void legal_service::print_data()
+{
+	cout << "Объект класса legal_service" << endl;
+	cout << "Номер услуги : " << number << endl;
+	cout << "Категория услуги : " << category << endl;
+	cout << "Название услуги : " << name_service << endl;
+	cout << "Дата :" << date << endl;
+	cout << "ФИО клиента : " << name_client << endl;
+	cout << "ФИО юриста : " << name_lawyer << endl;
+	cout << "Стоимость услуги : " << price << endl;
+}
+
+void legal_service::print_field()
+{
+	cout << "Доступные поля" << endl;
+	cout << "1 - Номер услуги " << endl;
+	cout << "2 - Категория услуги" << endl;
+	cout << "3 - Название услуги" << endl;
+	cout << "4 - Дата" << endl;
+	cout << "5 - ФИО клиента" << endl;
+	cout << "6 - ФИО юриста" << endl;
+	cout << "7 - Стоимость услуги" << endl;
+}
+
+void legal_service::print_field_mm()
+{
+	cout << "Доступные поля" << endl;
+	cout << "1 - Номер услуги" << endl;
+	cout << "2 - Категория услуги" << endl;
+	cout << "3 - Стоимость услуги" << endl;
+}
+
+void legal_service::find_field(vector<legal_service>& arr, int var, string data)
+{
+	for (auto& el : arr)
+	{
+		switch (var)
+		{
+		case 1:
+			if (stoi(data) == el.number)
+			{
+				el.print_data();
+			}
+			break;
+		case 2:
+			if (stoi(data) == el.category)
+			{
+				el.print_data();
+			}
+			break;
+		case 3:
+			if (data == el.name_service)
+			{
+				el.print_data();
+			}
+			break;
+		case 4:
+			if (data == el.date)
+			{
+				el.print_data();
+			}
+			break;
+		case 5:
+			if (data == el.name_client)
+			{
+				el.print_data();
+			}
+			break;
+		case 6:
+			if (data == el.name_lawyer)
+			{
+				el.print_data();
+			}
+			break;
+		case 7:
+			if (stoi(data) == el.price)
+			{
+				el.print_data();
+			}
+			break;
+		default:
+			break;
+		}
+	}
+}
+
+void legal_service::find_min(vector<legal_service>& arr, int var)
+{
+	int min = 100000;
+	if (var == 1)
+	{
+		for (auto& el : arr)
+		{
+			if (el.number < min)
+			{
+				min = el.number;
+			}
+		}
+	}
+	else if (var == 2)
+	{
+		for (auto& el : arr)
+		{
+			if (el.category < min)
+			{
+				min = el.category;
+			}
+		}
+	}
+	else if (var == 3)
+	{
+		for (auto& el : arr)
+		{
+			if (el.price < min)
+			{
+				min = el.price;
+			}
+		}
+	}
+	cout << "Минимальный элемент = " << min << endl;
+}
+
+void legal_service::find_max(vector<legal_service>& arr, int var)
+{
+	int max = 0;
+	if (var == 1)
+	{
+		for (auto& el : arr)
+		{
+			if (el.number > max)
+			{
+				max = el.number;
+			}
+		}
+	}
+	else if (var == 2)
+	{
+		for (auto& el : arr)
+		{
+			if (el.category > max)
+			{
+				max = el.category;
+			}
+		}
+	}
+	else if (var == 3)
+	{
+		for (auto& el : arr)
+		{
+			if (el.price> max)
+			{
+				max = el.price;
+			}
+		}
+	}
+	cout << "Максимальный элемент = " << max << endl;
+}
+
+void legal_service::sort_field(vector<legal_service>& arr, int var)
+{
+	switch (var)
+	{
+	case 1:
+		sort(arr.begin(), arr.end(), [](const legal_service& l1, const legal_service& l2) {return l1.number < l2.number;});
+		break;
+	case 2:
+		sort(arr.begin(), arr.end(), [](const legal_service& l1, const legal_service& l2) {return l1.category < l2.category;});
+		break;
+	case 3:
+		sort(arr.begin(), arr.end(), [](const legal_service& l1, const legal_service& l2) {return l1.name_service < l2.name_service;});
+		break;
+	case 4:
+		sort(arr.begin(), arr.end(), [](const legal_service& l1, const legal_service& l2) {return l1.date < l2.date;});
+		break;
+	case 5:
+		sort(arr.begin(), arr.end(), [](const legal_service& l1, const legal_service& l2) {return l1.name_client < l2.name_client;});
+		break;
+	case 6:
+
+		break;
+	case 7:
+		break;
+	default:
+		cout << "Неверный ввод данных" << endl;
+		break;
 	}
 }
