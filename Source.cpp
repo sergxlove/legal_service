@@ -2,6 +2,7 @@
 #include <fstream>
 #include <algorithm>
 #include <vector>
+#include <string>
 using namespace std;
 class legal_service
 {
@@ -11,6 +12,8 @@ public:
 	~legal_service();
 	void print_info();
 	void set_Data();
+	void write_file(vector<legal_service>& arr, string path);
+	void read_file(vector<legal_service>& arr, string path);
 private:
 	int number;//номер услуги
 	int category;//категория услуги
@@ -27,6 +30,7 @@ int main()
 	vector<legal_service> arr;
 	int var_switch, count, var;
 	var = count = var_switch = 0;
+	string path = "data.txt";
 	bool exit = false;
 	service.print_info();
 	while (!exit)
@@ -65,7 +69,8 @@ int main()
 			}
 			else
 			{
-
+				service.write_file(arr, path);
+				cout << "Данные записаны в файл" << endl;
 			}
 			break;
 		case 4:
@@ -207,4 +212,46 @@ void legal_service::set_Data()
 	name_lawyer = first_name + " " + second_name + " " + third_name;
 	cout << "Введите стоимость услуги" << endl;
 	cin >> price;
+}
+
+void legal_service::write_file(vector<legal_service>& arr, string path)
+{
+	fstream file;
+	file.open(path, fstream::out);
+	if (file.is_open())
+	{
+		file.clear();
+		file << arr.size() << "\n";
+		for (auto& el : arr)
+		{
+			file << el.number << "\n";
+			file << el.category << "\n";
+			file << el.name_service << "\n";
+			file << el.date << "\n";
+			file << el.name_client << "\n";
+			file << el.name_lawyer << "\n";
+			file << el.price << "\n";
+		}
+		file.close();
+	}
+	else
+	{
+		cout << "Ошибка открытия файла" << endl;
+	}
+}
+
+void legal_service::read_file(vector<legal_service>& arr, string path)
+{
+	fstream file;
+	string data;
+	int size = 0;
+	file.open(path, fstream::in);
+	if (file.is_open())
+	{
+		getline(file, data);
+	}
+	else
+	{
+		cout << "Ошибка открытия файла" << endl;
+	}
 }
