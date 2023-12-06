@@ -41,8 +41,10 @@ int main()
 	string data;
 	bool exit = false;
 	service.print_info();
+	service.read_file(arr, path);
 	while (!exit)
 	{
+		cout << "Выберите действие" << endl;
 		cin >> var_switch;
 		switch (var_switch)
 		{
@@ -67,6 +69,7 @@ int main()
 				}
 				cin >> var;
 				arr.erase(arr.begin() + var);
+				service.write_file(arr, path);
 				cout << "Объект удален" << endl;
 			}
 			break;
@@ -133,7 +136,11 @@ int main()
 			}
 			else
 			{
-
+				service.print_field();
+				cout << "Выберите поле" << endl;
+				cin >> var;
+				service.sort_field(arr, var);
+				cout << "Вектор отсортирован" << endl;
 			}
 			break;
 		case 9:
@@ -287,6 +294,7 @@ void legal_service::read_file(vector<legal_service>& arr, string path)
 			getline(file, obj.name_lawyer);
 			getline(file, data);
 			obj.price = stoi(data);
+			arr.push_back(obj);
 		}
 		file.close();
 	}
@@ -474,9 +482,10 @@ void legal_service::sort_field(vector<legal_service>& arr, int var)
 		sort(arr.begin(), arr.end(), [](const legal_service& l1, const legal_service& l2) {return l1.name_client < l2.name_client;});
 		break;
 	case 6:
-
+		sort(arr.begin(), arr.end(), [](const legal_service& l1, const legal_service& l2) {return l1.name_lawyer < l2.name_lawyer;});
 		break;
 	case 7:
+		sort(arr.begin(), arr.end(), [](const legal_service& l1, const legal_service& l2) {return l1.price < l2.price;});
 		break;
 	default:
 		cout << "Неверный ввод данных" << endl;
