@@ -203,6 +203,7 @@ legal_service::~legal_service()
 
 void legal_service::print_info()
 {
+	cout << "------------------------------------------------------" << endl;
 	cout << "Доступные режимы:" << endl;
 	cout << "1 - Ввод данных" << endl;
 	cout << "2 - Удаление объекта" << endl;
@@ -214,6 +215,7 @@ void legal_service::print_info()
 	cout << "8 - Сортировка по полям" << endl;
 	cout << "9 - Вывод данных" << endl;
 	cout << "10 - Выход" << endl;
+	cout << "------------------------------------------------------" << endl;
 }
 
 void legal_service::set_Data()
