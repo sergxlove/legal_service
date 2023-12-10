@@ -158,6 +158,9 @@ int main()
 			break;
 		case 10:
 			exit = true;
+			cout << "----------------------------------" << endl;
+			cout << "Программа завершена" << endl;
+			cout << "----------------------------------" << endl;
 			break;
 		default:
 			cout << "Такого режима нет" << endl;
@@ -280,6 +283,7 @@ void legal_service::read_file(vector<legal_service>& arr, string path)
 	string data;
 	int size = 0;
 	file.open(path, fstream::in);
+	arr.clear();
 	if (file.is_open())
 	{
 		getline(file, data);
@@ -308,6 +312,7 @@ void legal_service::read_file(vector<legal_service>& arr, string path)
 
 void legal_service::print_data()
 {
+	cout << "----------------------------------------------" << endl;
 	cout << "Объект класса legal_service" << endl;
 	cout << "Номер услуги : " << number << endl;
 	cout << "Категория услуги : " << category << endl;
